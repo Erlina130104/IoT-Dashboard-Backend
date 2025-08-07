@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+  mqtt_broker:
+    image: eclipse-mosquitto
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mqtt_broker/config:/mosquitto/config
+    restart: unless-stopped
+
+  mqtt_simulator:
+    build: ./mqtt_simulator
+    depends_on:
+      - mqtt_broker
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    restart: unless-stopped
+
+
